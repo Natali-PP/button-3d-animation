@@ -1,34 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { useState, Suspense } from "react";
+import './App.css';
+import Shapes from './components/Shapes.jsx';
+import { motion } from "framer-motion";
+import { MotionConfig } from "framer-motion";
+import useMeasure from "react-use-measure";
 
+const transition = {
+  type: "spring",
+  duration: 0.7,
+  bounce: 0.2
+};
 function App() {
-  const [count, setCount] = useState(0)
-
+  const [isHover, setIsHover] = useState(false);
+  const [isPress, setIsPress] = useState(false);
+  const [ref, bounds] = useMeasure({ scroll: false });
+  
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </div>
+
+    <MotionConfig transition={transition}>
+      <motion.button
+        ref={ref}
+        variants={{
+          rest:{scale:1},
+          hover:{scale:1.5},
+          press: {scale:1.4}
+        }}
+        initial={false}
+        whileTap="press"
+        animate={ isHover ? 'hover' : 'rest'}
+        onHoverStart={(e) => {
+          console.log('hover empieza')
+          setIsHover(true);
+        }}
+        onHoverEnd={(e) => {
+          console.log('hoverendddd')
+          setIsHover(false);
+        }}
+        onTapStart={() => setIsPress(true)}
+        onTap={() => setIsPress(false)}
+        onTapCancel={() => setIsPress(false)}
+      >
+        <motion.div
+          variants={{
+            rest:{opacity:0},
+            hover:{opacity:1}
+          }}
+          className="scene"
+        >
+          <div className='container'
+
+          >
+          <Suspense fallback={null}>
+            <Shapes 
+              isHover={isHover}
+              isPress={isPress}
+            />
+          </Suspense>
+        </div>
+
+        </motion.div>
+        <motion.div
+          variants={{ hover: { scale: 0.85 }, press: { scale: 1.1 } }}
+          className="label"
+        >
+          play
+        </motion.div>
+      </motion.button>
+
+    </MotionConfig>
   )
 }
 
 export default App
+
+
