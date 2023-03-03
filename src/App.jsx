@@ -1,7 +1,7 @@
-import { useState, Suspense } from "react";
+import { useState, Suspense, useRef } from "react";
 import './App.css';
 import Shapes from './components/Shapes.jsx';
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { MotionConfig } from "framer-motion";
 import useMeasure from "react-use-measure";
 
@@ -14,7 +14,9 @@ function App() {
   const [isHover, setIsHover] = useState(false);
   const [isPress, setIsPress] = useState(false);
   const [ref, bounds] = useMeasure({ scroll: false });
-  
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
   return (
 
     <MotionConfig transition={transition}>
@@ -39,6 +41,10 @@ function App() {
         onTapStart={() => setIsPress(true)}
         onTap={() => setIsPress(false)}
         onTapCancel={() => setIsPress(false)}
+        onPointerMove={(e) => {
+          mouseX.set(e.clientX - bounds.x - bounds.width / 2);
+          mouseY.set(e.clientY - bounds.y - bounds.height / 2);
+        }}
       >
         <motion.div
           variants={{
@@ -47,16 +53,18 @@ function App() {
           }}
           className="scene"
         >
-          <div className='container'
-
-          >
-          <Suspense fallback={null}>
-            <Shapes 
-              isHover={isHover}
-              isPress={isPress}
-            />
-          </Suspense>
-        </div>
+          <div className='container'>
+            <div className='shadow hack1'></div>
+            <div className='shadow hack2'></div>
+            <Suspense fallback={null}>
+              <Shapes 
+                isHover={isHover}
+                isPress={isPress}
+                mouseX={mouseX}
+                mouseY={mouseY}
+              />
+            </Suspense>
+          </div>
 
         </motion.div>
         <motion.div

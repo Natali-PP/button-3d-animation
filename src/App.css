@@ -39,7 +39,7 @@ body button{
   text-align: center;
   display: flex;
   align-items: center;
-  color:#ffffff;
+  color:#2f57ff;
   border:none;
   appearance: none;
   outline: none;
@@ -54,8 +54,8 @@ body button{
   background: linear-gradient(
     45deg,
     #000000 0%,
-    #111111 30%,
-    #20c20e 700%
+    #ff901f 30%,
+    #ffd319 100%
   );
 }
 .scene .container {
@@ -85,23 +85,23 @@ body button{
   font-weight: 700;
   z-index: 1;
 }
-/*.App {
-  height: 100vh;
-  width: 100vw;
-  color:#efdeed;
-  font-family: 'Work Sans', sans-serif;
-  overflow:hidden;
+.shadow {
+  position: absolute;
+  bottom: 100px;
+  width: 100px;
+  height: 30px;
+  filter: blur(20px);
 }
 
-.App canvas{
-  width:100vw;
-  height:100vh;
+.shadow.hack1 {
+  right: 118px;
+  background: #ffd319;
 }
-body {
-  padding: 0;
-  margin: 0;
+
+.shadow.hack2 {
+  left: 124px;
+  background: #ff901f;
 }
-*/
 html {
   box-sizing: border-box;
   -webkit-font-smoothing: antialiased;
